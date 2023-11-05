@@ -1,11 +1,12 @@
 window.onload = () => {
     const startButton = document.getElementById("startButton");
+    const resetButton = document.getElementById("reset");
 
     // Array with cards
     const cardsArrayDefault = createCards();
 
     // Start 'Click'
-    startButton.addEventListener('click', (e)=>{startGame(e, cardsArrayDefault)});
+    startButton.addEventListener('click', (e)=>{startGame(e, cardsArrayDefault, reset)});
 }
 
 
@@ -22,9 +23,12 @@ function createCards(){
 }
 
 // Starts the Game, making a random desk of cards visible, and invisible the button 'Start'
-function startGame(e, cardsArrayDefault){
+function startGame(e, cardsArrayDefault, reset){
     e.target.style.display = "none";
     let cardsArrayRandom = shuffleArray(cardsArrayDefault);
+    const attempts = document.getElementById("attempts");
+    reset.style.display = "none";
+    cont = 7;
 
     // Create list of all the div of cards and make them visible
     const game = document.getElementById("game");
@@ -65,6 +69,8 @@ function startGame(e, cardsArrayDefault){
                 if(checkPair(cardsFlip, cardsArrayRandom)){
                     pairs.push(cardsFlip[0]);
                     pairs.push(cardsFlip[1]);
+                }else{
+                    cont--;
                 }
 
                 setTimeout(() => {
@@ -72,7 +78,15 @@ function startGame(e, cardsArrayDefault){
                         flipCard(cardsFlip[0], cardsArrayRandom, pairs);
                         flipCard(cardsFlip[1], cardsArrayRandom, pairs);
                     }
-    
+                    attempts.innerHTML = "You have: " + cont + " attempts"
+                    
+                    if(cont == 0){
+                        game.style.display = "none";
+                        //finishGame();
+                    }
+                    if(pairs.length==10){
+                        game.style.display = "none";
+                    }
                     cardsFlip = [];
                 }, 2000);
             }
