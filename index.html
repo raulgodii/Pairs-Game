@@ -12,7 +12,7 @@
         <h1>Pairs Game</h1>
     </header>
     <main>
-        <h4>Click "Start" to begin the game.</h4>
+        <h4 id="clickStart">Click "Start" to begin the game.</h4>
         <div id="game" style="display:none">
             <img id="0" src="img/0.png" alt="card">
             <img id="1" src="img/0.png" alt="card">
@@ -25,6 +25,9 @@
             <img id="8" src="img/0.png" alt="card">
             <img id="9" src="img/0.png" alt="card">
             <p id="attempts">You have: 7 attempts</p>
+        </div>
+        <div>
+            <p id="endGame"></p>
         </div>
         <button id="startButton">Start</button>
         <button id="reset" style="display:none">Reset</button>

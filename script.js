@@ -7,6 +7,11 @@ window.onload = () => {
 
     // Start 'Click'
     startButton.addEventListener('click', (e)=>{startGame(e, cardsArrayDefault, resetButton)});
+
+    // Reset 'Click'
+    resetButton.addEventListener('click', (e) => {
+        location.reload();
+    });
 }
 
 
@@ -24,12 +29,14 @@ function createCards(){
 
 // Starts the Game, making a random desk of cards visible, and invisible the button 'Start'
 function startGame(e, cardsArrayDefault, resetButton){
-    
+    const clickStart = document.getElementById("clickStart");
+    clickStart.style.display = "none";
     e.target.style.display = "none";
     let cardsArrayRandom = shuffleArray(cardsArrayDefault);
     const attempts = document.getElementById("attempts");
     resetButton.style.display = "none";
-    cont = 7;
+    let cont = 7;
+    const endGame = document.getElementById("endGame");
 
     // Create list of all the div of cards and make them visible
     const game = document.getElementById("game");
@@ -37,13 +44,6 @@ function startGame(e, cardsArrayDefault, resetButton){
     const cardList = game.querySelectorAll("img");
     let cardsFlip = [];
     let pairs = [];
-
-    resetButton.addEventListener('click', (e) => {
-        cardList.forEach(img => {
-            img.src = "img/0.png";
-        });
-        return startGame(e, cardsArrayDefault, resetButton)
-    });
 
     // Create event for each card of the list
     cardList.forEach(img => {
@@ -70,13 +70,22 @@ function startGame(e, cardsArrayDefault, resetButton){
             if(cardsFlip.length == 2){
 
                 if(cardsFlip[0]==cardsFlip[1]){
+                    cont--;
+                    attempts.innerHTML = "You have: " + cont + " attempts"
                     cardsFlip = [];
+                    if(cont == 0){
+                        game.style.display = "none";
+                        resetButton.style.display = "inline";
+                        finishGame(false, endGame);
+                    }
                     return;
                 }
 
                 if(checkPair(cardsFlip, cardsArrayRandom)){
                     pairs.push(cardsFlip[0]);
                     pairs.push(cardsFlip[1]);
+                    cardList[cardsFlip[0]].className = "pair";
+                    cardList[cardsFlip[1]].className = "pair";
                 }else{
                     cont--;
                 }
@@ -86,15 +95,19 @@ function startGame(e, cardsArrayDefault, resetButton){
                         flipCard(cardsFlip[0], cardsArrayRandom, pairs);
                         flipCard(cardsFlip[1], cardsArrayRandom, pairs);
                     }
-                    attempts.innerHTML = "You have: " + cont + " attempts"
+                    attempts.innerHTML = "You have: " + cont + " attempts";
                     
                     if(cont == 0){
                         game.style.display = "none";
-                        //finishGame();
+                        resetButton.style.display = "inline";
+                        finishGame(false, endGame);
                     }
+
                     if(pairs.length==10){
                         game.style.display = "none";
                         resetButton.style.display = "inline";
+                        resetButton.style.display = "inline";
+                        finishGame(true, endGame);
                     }
                     cardsFlip = [];
                 }, 2000);
@@ -135,4 +148,13 @@ function checkPair(cardsFlip, cardsArrayRandom){
     
     if(numberCard[0] === numberCard[1]) return true;
     else return false;
+}
+
+function finishGame(win, endGame){
+    if(win){
+        endGame.innerHTML = "Congratulations! You Win!";
+    }
+    else{
+        endGame.innerHTML = "You Lost!";
+    }
 }
