@@ -6,7 +6,7 @@ window.onload = () => {
     const cardsArrayDefault = createCards();
 
     // Start 'Click'
-    startButton.addEventListener('click', (e)=>{startGame(e, cardsArrayDefault, reset)});
+    startButton.addEventListener('click', (e)=>{startGame(e, cardsArrayDefault, resetButton)});
 }
 
 
@@ -23,11 +23,12 @@ function createCards(){
 }
 
 // Starts the Game, making a random desk of cards visible, and invisible the button 'Start'
-function startGame(e, cardsArrayDefault, reset){
+function startGame(e, cardsArrayDefault, resetButton){
+    
     e.target.style.display = "none";
     let cardsArrayRandom = shuffleArray(cardsArrayDefault);
     const attempts = document.getElementById("attempts");
-    reset.style.display = "none";
+    resetButton.style.display = "none";
     cont = 7;
 
     // Create list of all the div of cards and make them visible
@@ -36,6 +37,13 @@ function startGame(e, cardsArrayDefault, reset){
     const cardList = game.querySelectorAll("img");
     let cardsFlip = [];
     let pairs = [];
+
+    resetButton.addEventListener('click', (e) => {
+        cardList.forEach(img => {
+            img.src = "img/0.png";
+        });
+        return startGame(e, cardsArrayDefault, resetButton)
+    });
 
     // Create event for each card of the list
     cardList.forEach(img => {
@@ -86,6 +94,7 @@ function startGame(e, cardsArrayDefault, reset){
                     }
                     if(pairs.length==10){
                         game.style.display = "none";
+                        resetButton.style.display = "inline";
                     }
                     cardsFlip = [];
                 }, 2000);
