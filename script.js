@@ -128,7 +128,7 @@ function shuffleArray(array) {
 // Flip the card
 function flipCard(id, cardsArrayRandom, pairs){
     if(!pairs.includes(id)){
-        card = document.getElementById(id);
+        let card = document.getElementById(id);
         if(card.src.includes("img/0.png")){
             card.src = "img/" + cardsArrayRandom[card.id] + ".png";
         } 
@@ -153,8 +153,10 @@ function checkPair(cardsFlip, cardsArrayRandom){
 function finishGame(win, endGame){
     if(win){
         endGame.innerHTML = "Congratulations! You Win!";
+        endGame.style.color = "#95d5b2"
     }
     else{
         endGame.innerHTML = "You Lost!";
+        endGame.style.color = "red"
     }
 }
